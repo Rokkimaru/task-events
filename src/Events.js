@@ -4,9 +4,9 @@
 */
 export function createButton() {
    const btn = document.createElement('button')
-     btn.innerHTML = "Удали меня";
-     document.body.append(btn);
-     btn.addEventListener('click', () => document.body.remove(this));
+   btn.innerHTML = "Удали меня";
+   document.body.append(btn);
+   btn.addEventListener('click', function () {this.remove();});
 }
 
 /*
@@ -15,18 +15,18 @@ export function createButton() {
       При наведении курсора мыши на элемент списка у этого элемента создается атрибут title, в котором записан его текст.
 */
 export function createArrList(arr) {
-   let ul = document.createElement('ul');
-   ul.id = 'id_1'
-   document.body.append(ul);
+   const ul = document.createElement('ul');
    for(let i = 0; i < arr.length; i++){
-      let li = document.createElement('li');
+      const li = document.createElement('li');
       li.innerHTML = arr[i];
       ul.append(li);
    }
-   let list = document.getElementById("id_1").getElementsByTagName('li');
-   for(let i = 0; i < arr.length; i++){
-      list[i].addEventListener('mouseover', ()=>  list[i].setAttribute('title', list[i].innerHTML))
-   }
+   ul.addEventListener('mouseover', function (event) {
+     if (event.target && event.target.nodeName === 'LI') {
+        event.target.setAttribute('title', event.target.innerHTML);
+      }
+    });
+   document.body.append(ul);
 }
 
 /*
@@ -39,15 +39,14 @@ export function createArrList(arr) {
 */
 export function createLink() {
    const a = document.createElement('a');
-      a.href = "https://tensor.ru/";
-      a.innerHTML = "tensor";
-      document.body.append(a);
-      a.addEventListener('click', function (event) {
-        if( a.innerHTML !="tensor https://tensor.ru/"){
-          a.innerHTML = a.innerHTML + " " +  a.href;
-          event.preventDefault();
-        }
-    });
+   a.href = "https://tensor.ru/";
+   a.innerHTML = "tensor";
+   document.body.append(a);
+   a.addEventListener('click', function (event) {
+       a.innerHTML = a.innerHTML + " " +  a.href;
+       event.preventDefault();
+     }, { once: true },
+   );
 }
 
 /*
@@ -63,23 +62,23 @@ export function createLink() {
       Клик по новому li также добавляет восклицательный знак в конец текста.
 */
 export function createList() {
-const ul = document.createElement('ul');
-  ul.id = 'list'
-  const li = document.createElement('li');
-  li.innerHTML =  'Пункт';
-  const btn = document.createElement('button');
-  btn.innerHTML = 'Добавить пункт';
-  ul.append(li);
-  document.body.append(ul);
-  document.body.append(btn);
-  btn.addEventListener('click', () => {
-    const li1 = document.createElement('li');
-    li1.innerHTML =  'Пункт';
-    ul.append(li1);
-   });
-  document.querySelector('#list').addEventListener('click', function (event) {
-    if (event.target && event.target.nodeName === 'LI') {
-        event.target.innerHTML = event.target.innerHTML + '!';
-     }
-   });
+   const ul = document.createElement('ul');
+   const li = document.createElement('li');
+   li.innerHTML =  'Пункт';
+   ul.append(li);
+   const btn = document.createElement('button');
+   btn.innerHTML = 'Добавить пункт';
+   btn.addEventListener('click', () => {
+     const li1 = document.createElement('li');
+     li1.innerHTML =  'Пункт';
+     ul.append(li1);
+    });
+   ul.addEventListener('click', function (event) {
+     if (event.target && event.target.nodeName === 'LI') {
+         event.target.innerHTML = event.target.innerHTML + '!';
+      }
+    });
+    
+   document.body.append(ul);
+   document.body.append(btn);
 }
